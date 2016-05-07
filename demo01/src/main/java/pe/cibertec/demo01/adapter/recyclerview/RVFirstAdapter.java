@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.StringTokenizer;
 
 import pe.cibertec.demo01.R;
+import pe.cibertec.demo01.adapter.recyclerview.interfaces.IRVFirstAdapter;
 import pe.cibertec.demo01.entities.Persona;
 
 /**
@@ -18,8 +19,10 @@ import pe.cibertec.demo01.entities.Persona;
 public class RVFirstAdapter extends RecyclerView.Adapter<RVFirstAdapter.RVFirstAdapterViewHolder> {
 
     private ArrayList<Persona> mLstPersona;
+    private IRVFirstAdapter mIRVFirstAdapter;
 
-    public RVFirstAdapter() {
+    public RVFirstAdapter(IRVFirstAdapter mIRVFirstAdapter) {
+        this.mIRVFirstAdapter = mIRVFirstAdapter;
         mLstPersona = new ArrayList<>();
     }
 
@@ -53,7 +56,17 @@ public class RVFirstAdapter extends RecyclerView.Adapter<RVFirstAdapter.RVFirstA
         holder.tvFirstItemNombreCompleto.setText(persona.getNombre() + " " + persona.getApellido());
         holder.tvFirstItemEdad.setText(String.valueOf(persona.getEdad()));
         holder.tvFirstItemDNI.setText(persona.getDni());
+        holder.itemView.setTag(position);
+        holder.itemView.setOnClickListener(itemViewOnClickListener);
     }
+
+    View.OnClickListener itemViewOnClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            int position = (int) v.getTag();
+            mIRVFirstAdapter.onSelectItem(mLstPersona.get(position));
+        }
+    };
 
     @Override
     public int getItemCount() {
